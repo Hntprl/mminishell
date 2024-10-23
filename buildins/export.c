@@ -99,7 +99,7 @@ void	ft_export_command(char **split, t_list **env)
 	if (!ft_isalpha(split[1][0]))
 		printf("export: %s: not a valid identifier\n", split[1]);
 	if (!ft_strchr(split[1], '='))
-		return;
+		return ;
 	if (double_export(split[1], ft_list_to_str(*(env))))
 	{
 		ft_unset_command(split[1], env);

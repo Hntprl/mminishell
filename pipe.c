@@ -17,12 +17,12 @@ void	dup_in_out(int p[2], int in, int fd, int pipe)
 	if (pipe == 1)
 	{
 		if (in != 1 && fd != -1337)
-			dup2(p[1], 1);
+			err(dup2(p[1], 1));
 	}
 	else
 	{
 		if (in != 0 && fd != -1337)
-			dup2(p[0], 0);
+			err(dup2(p[0], 0));
 	}
 }
 
@@ -33,20 +33,16 @@ void	ft_pipe_redirections(t_parser *parser, int p[2], int pipe)
 	int	std_in;
 
 	fd = 1;
-	in = dup(0);
+	err(in = dup(0));
 	std_in = in;
 	while (parser->red)
 	{
-		fd = open_files(parser, std_in);
+		err(fd = open_files(parser, std_in));
 		if (fd == -1337)
 		{
-			if (in != 1)
-				exit(1);
-			else
-			{
-				dup2(in, 0);
-				break ;
-			}
+			err(in);
+			err(dup2(in, 0));
+			break ;
 		}
 		in = ft_redirection(parser->red, fd);
 		parser->red = parser->red->next;
@@ -62,9 +58,7 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 	int		status;
 
 	cmd.envp = ft_list_to_str((*ls_env));
-	cmd.pid = fork();
-	if (cmd.pid == -1)
-		exit(EXIT_FAILURE);
+	err(cmd.pid = fork());
 	if (cmd.pid == 0)
 	{
 		ft_pipe_redirections(parser, p, 1);
@@ -77,7 +71,7 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 		(execve(jn, cmd.cmd1, cmd.envp), free(jn), exit(1));
 	}
 	free(cmd.envp);
-	waitpid(cmd.pid, &status, 0);
+	err(waitpid(cmd.pid, &status, 0));
 	g_status = WEXITSTATUS(status);
 }
 
@@ -86,9 +80,7 @@ void	ft_all_commands(t_parser *parser, t_list **ls_env, int p[2])
 	t_cmd	cmd;
 
 	cmd.envp = ft_list_to_str((*ls_env));
-	cmd.pid = fork();
-	if (cmd.pid == -1)
-		exit(EXIT_FAILURE);
+	err(cmd.pid = fork());
 	if (cmd.pid == 0)
 	{
 		ft_pipe_redirections(parser, p, 1);
@@ -107,9 +99,7 @@ void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 	int		status;
 
 	cmd.envp = ft_list_to_str((*ls_env));
-	cmd.pid = fork();
-	if (cmd.pid == -1)
-		exit(EXIT_FAILURE);
+	err(cmd.pid = fork());
 	if (cmd.pid == 0)
 	{
 		ft_pipe_redirections(parser, p, 0);
@@ -123,6 +113,6 @@ void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 		exit(1);
 	}
 	free(cmd.envp);
-	waitpid(cmd.pid, &status, 0);
+	err(waitpid(cmd.pid, &status, 0));
 	g_status = WEXITSTATUS(status);
 }

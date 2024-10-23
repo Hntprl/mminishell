@@ -70,7 +70,8 @@ int	print_variables(char **command, int j, int i, char **env)
 			printf("%d", ft_getpid());
 			i += 2;
 		}
-		if (command[j][i + 1] && command[j][i] == '$' && command[j][i + 1] == '?')
+		if (command[j][i + 1] && command[j][i] == '$'
+			&& command[j][i + 1] == '?')
 		{
 			printf("%d", g_status);
 			i += 2;

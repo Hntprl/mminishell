@@ -50,9 +50,9 @@ typedef enum e_tokens
 
 typedef struct s_garbage
 {
-	void	*data;
-	bool	is_free;
-	struct s_garbage *next;
+	void				*data;
+	bool				is_free;
+	struct s_garbage	*next;
 }			t_garbage;
 
 typedef struct s_lexer
@@ -138,6 +138,7 @@ void					ft_env_command(t_list *env);
 void					ft_export_command(char **split, t_list **env);
 void					ft_unset_command(char *split, t_list **env);
 int						ft_buildins(t_parser *parser, t_list **ls_env);
+void					err(int r);
 // Environment
 void					commandcheck(char **envp, char *cmd2);
 char					*ft_findpath(char **env);

@@ -21,9 +21,7 @@ void	shell_commands(char **split, t_list *env)
 	char	*jn;
 
 	jn = NULL;
-	pid = fork();
-	if (pid == -1)
-		(write(1, "Error:Fork!", 11), exit(1));
+	err(pid = fork());
 	if (pid == 0)
 	{
 		envp = ft_list_to_str(env);
@@ -32,8 +30,14 @@ void	shell_commands(char **split, t_list *env)
 		jn = ft_strjoin(path, cmd);
 		(commandcheck(envp, cmd), execve(jn, split, envp), free(jn), exit(127));
 	}
-	wait(&pid);
+	err(wait(&pid));
 	g_status = WEXITSTATUS(pid);
+}
+
+void	ft_close_std(int std_in, int std_out)
+{
+		(err(dup2(std_out, 1)), err(close(std_out)));
+		(err(dup2(std_in, 0)), err(close(std_in)));
 }
 
 void	ft_single_command(t_parser *parser, t_list **ls_env)
@@ -45,11 +49,11 @@ void	ft_single_command(t_parser *parser, t_list **ls_env)
 	fd = 1;
 	std_in = 0;
 	std_out = 1;
-	std_in = dup(0);
-	std_out = dup(1);
+	err(std_in = dup(0));
+	err(std_out = dup(1));
 	while (parser->red)
 	{
-		fd = open_files(parser, std_in);
+		err(fd = open_files(parser, std_in));
 		if (fd == -1337)
 			return ;
 		ft_redirection(parser->red, fd);
@@ -57,22 +61,21 @@ void	ft_single_command(t_parser *parser, t_list **ls_env)
 	}
 	if (ft_buildins(parser, ls_env))
 	{
-		((dup2(std_out, 1), close(std_out)), (dup2(std_in, 0), close(std_in)));
+		ft_close_std(std_in, std_out);
 		return ;
 	}
 	else
 		shell_commands(parser->command, (*ls_env));
-	((dup2(std_out, 1), close(std_out)), (dup2(std_in, 0), close(std_in)));
+	ft_close_std(std_in, std_out);
 }
 
 void	multiple_commands_cleaner(int input, int p[2], int std_out, int std_in)
 {
-	close(input);
+	err(close(input));
 	close_fd(p);
 	while (wait(NULL) > 0)
 		;
-	(dup2(std_out, 1), close(std_out));
-	(dup2(std_in, 0), close(std_in));
+	ft_close_std(std_in, std_out);
 }
 
 void	ft_multiple_commands(t_parser *parser, t_list **ls_env)
@@ -82,20 +85,20 @@ void	ft_multiple_commands(t_parser *parser, t_list **ls_env)
 	int	std_in;
 	int	std_out;
 
-	std_in = dup(0);
-	std_out = dup(1);
-	pipe(p);
+	err(std_in = dup(0));
+	err(std_out = dup(1));
+	err(pipe(p));
 	ft_first_command(parser, ls_env, p);
-	close(p[1]);
+	err(close(p[1]));
 	parser = parser->next;
 	input = p[0];
 	if (ft_parsersize(parser) > 1)
 	{
 		while (parser->next)
 		{
-			(dup2(input, 0), close(input), pipe(p));
+			(err(dup2(input, 0)), err(close(input)), err(pipe(p)));
 			ft_all_commands(parser, ls_env, p);
-			(close(p[1]), input = p[0]);
+			(err(close(p[1])), input = p[0]);
 			parser = parser->next;
 		}
 	}

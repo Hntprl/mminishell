@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+void	err(int r)
+{
+	if (r == -1)
+		(ft_malloc(0, 'f', true), exit(1));
+}
+
 // pwd command .
 void	ft_pwd_command(void)
 {
@@ -56,11 +62,13 @@ int	ft_expand_pid(int i, char *var_name)
 				printf("%d", ft_getpid());
 				i += 2;
 			}
-			if (var_name[i] != '$' || (var_name[i + 1] != '$' && var_name[i + 1] != '?'))
-				break;
+			if (var_name[i] != '$' || (var_name[i + 1] != '$'
+					&& var_name[i + 1] != '?'))
+				break ;
 		}
 		if (!var_name[i])
-			return (printf(": No such file or directory\n"),g_status = 127, -1337);
+			return (printf(": No such file or directory\n")
+				, g_status = 127, -1337);
 	}
 	return (i);
 }
@@ -91,6 +99,5 @@ int	ft_expander(char *var_name, char **env)
 	}
 	if (var_name[i - 1] != '$')
 		printf("%s: No such file or directory\n", (var_name - 1));
-	free(env);
-	return (1);
+	return (free(env), 1);
 }

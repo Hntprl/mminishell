@@ -46,7 +46,8 @@ void	ft_exit_command(char **command)
 	{
 		if (!ft_isdigit(command[1][i]))
 		{
-			printf("minishell: exit: %s: numeric argument required", command[1]);
+			printf("minishell: exit: %s: numeric argument required",
+				command[1]);
 			(ft_malloc(0, 'f', true), exit(2));
 		}
 		i ++;
