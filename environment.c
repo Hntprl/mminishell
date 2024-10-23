@@ -20,6 +20,7 @@ void	commandcheck(char **envp, char *cmd2)
 		cmd2 = cmd2 + 1;
 		write(2, cmd2, ft_strlen(cmd2));
 		write(2, ": command not found\n", 20);
+		exit(127);
 		return ;
 	}
 }
@@ -73,7 +74,7 @@ t_list	*mini_env(void)
 
 	lst = NULL;
 	if (getcwd(buf, 4096))
-		exit(ft_status(0, false));
+		exit(g_status);
 	tmp = ft_strjoin("PWD=", buf);
 	ft_lstadd_back(&lst, ft_lstnew(tmp));
 	free(tmp);
@@ -95,7 +96,7 @@ t_list	*fill_envp(char **env)
 	else
 	{
 		while (env[++i])
-			ft_lstadd_back(&lst, ft_lstnew(env[i]));
+			ft_lstadd_back(&lst, ft_lsttnew(env[i]));
 	}
 	return (lst);
 }

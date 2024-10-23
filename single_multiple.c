@@ -30,9 +30,10 @@ void	shell_commands(char **split, t_list *env)
 		cmd = ft_strjoin("/", split[0]);
 		path = ft_checkaccess(envp, cmd);
 		jn = ft_strjoin(path, cmd);
-		(commandcheck(envp, cmd), execve(jn, split, envp));
+		(commandcheck(envp, cmd), execve(jn, split, envp), free(jn), exit(127));
 	}
 	wait(&pid);
+	g_status = WEXITSTATUS(pid);
 }
 
 void	ft_single_command(t_parser *parser, t_list **ls_env)

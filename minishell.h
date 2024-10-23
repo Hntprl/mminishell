@@ -35,6 +35,8 @@
 # define BLACK "\033[30m"
 //////////////////////////////////////////////////////////////////////
 
+extern int	g_status;
+
 // Structs
 typedef enum e_tokens
 {
@@ -113,6 +115,8 @@ void					close_fd(int fd[2]);
 int						ft_isalpha(int c);
 size_t					ft_super_strlen(const char *s, char c);
 int						ft_strcmp(const char *s1, const char *s2);
+void					*ft_malloc(size_t size, char alloc, bool is_free);
+int						ft_isdigit(int c);
 /* Lincked-list*/
 t_list					*ft_lstnew(char *ontent);
 char					**ft_list_to_str(t_list *env);
@@ -124,6 +128,7 @@ t_list					*ft_lstlast(t_list *lst);
 void					del(void *lst);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 int						ft_parsersize(t_parser *lst);
+t_list					*ft_lsttnew(char *content);
 // Commands
 void					ft_command_check(t_parser *parser, t_list **ls_env);
 void					ft_pwd_command(void);
@@ -140,7 +145,6 @@ char					*ft_checkaccess(char **env, char *cmd);
 t_list					*fill_envp(char **env);
 char					*ft_find_env_value(char *var_name, char **env,
 							int *is_invalid);
-int						ft_status(int status, bool valid);
 // Shell-build
 void					shell_commands(char **split, t_list *env);
 void					minishell(t_list *ls_env);

@@ -12,15 +12,6 @@
 
 #include "minishell.h"
 
-int	ft_status(int status, bool valid)
-{
-	static int	_exit;
-
-	if (valid)
-		_exit = status;
-	return (_exit);
-}
-
 // env command .
 void	ft_env_command(t_list *env)
 {

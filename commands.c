@@ -40,24 +40,57 @@ char	*ft_find_env_value(char *var_name, char **env, int *is_invalid)
 	return ((*is_invalid) = 1, "1");
 }
 
+int	ft_expand_pid(int i, char *var_name)
+{
+	if (var_name[i + 1] == '?' || var_name[i + 1] == '$')
+	{
+		while (var_name[i] && var_name[i + 1])
+		{
+			while (var_name[i] == '$' && var_name[i + 1] == '?')
+			{
+				printf("%d", g_status);
+				i += 2;
+			}
+			while (var_name[i] == '$' && var_name[i + 1] == '$')
+			{
+				printf("%d", ft_getpid());
+				i += 2;
+			}
+			if (var_name[i] != '$' || (var_name[i + 1] != '$' && var_name[i + 1] != '?'))
+				break;
+		}
+		if (!var_name[i])
+			return (printf(": No such file or directory\n"),g_status = 127, -1337);
+	}
+	return (i);
+}
+
 int	ft_expander(char *var_name, char **env)
 {
 	char	*var;
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	if (!var_name[1])
 		return (printf("%s\n", "$: command not found"));
-	var_name = (var_name + 1);
-	while (env[i])
+	i = ft_expand_pid(i, var_name);
+	if (i == -1337)
+		return (1337);
+	var_name += (i + 1);
+	while (env[j])
 	{
-		var = ft_substr(env[i], 0, ft_super_strlen(env[i], '='));
+		var = ft_substr(env[j], 0, ft_super_strlen(env[j], '='));
 		if (!ft_strcmp(var_name, var))
-			return ((printf("%s: No such file or directory\n"
-						, ft_strchr(env[i], '=') + 1)));
+			return ((free(env), free(var)
+					, printf("%s: No such file or directory\n"
+						, ft_strchr(env[j], '=') + 1)));
 		free(var);
-		i++;
+		j++;
 	}
+	if (var_name[i - 1] != '$')
+		printf("%s: No such file or directory\n", (var_name - 1));
 	free(env);
 	return (1);
 }

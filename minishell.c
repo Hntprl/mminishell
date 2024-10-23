@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	g_status = 0;
+
 int	ft_getpid(void)
 {
 	int		fd;
@@ -34,6 +36,25 @@ int	ft_getpid(void)
 	return (pid = ft_atoi(buffer));
 }
 
+void	ft_exit_command(char **command)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	if (command[1])
+	{
+		if (!ft_isdigit(command[1][i]))
+		{
+			printf("minishell: exit: %s: numeric argument required", command[1]);
+			(ft_malloc(0, 'f', true), exit(2));
+		}
+		i ++;
+	}
+	status = ft_atoi(command[1]);
+	(ft_malloc(0, 'f', true), exit(status));
+}
+
 int	ft_buildins(t_parser *parser, t_list **ls_env)
 {
 	if (!ft_memcmp(parser->command[0], "pwd", 4))
@@ -49,7 +70,7 @@ int	ft_buildins(t_parser *parser, t_list **ls_env)
 	else if (!ft_memcmp(parser->command[0], "export", 7))
 		return (ft_export_command(parser->command, ls_env), 1);
 	else if (!ft_memcmp(parser->command[0], "exit", 5))
-		return ((write(1, "exit\n", 5), exit(0)), 1);
+		return (ft_exit_command(parser->command), 1);
 	else if (parser->command[0][0] == '$')
 		return (ft_expander(parser->command[0], ft_list_to_str((*ls_env))), 1);
 	else
@@ -65,7 +86,7 @@ void	minishell(t_list *ls_env)
 
 	lexer = NULL;
 	parser = NULL;
-	prompt = BOLD RED "Mini" YELLOW "shell" RED ">" RESET;
+	prompt = "Minishell>";
 	rd_history = readline(prompt);
 	while (rd_history)
 	{
@@ -74,8 +95,9 @@ void	minishell(t_list *ls_env)
 		rd_history = readline(prompt);
 	}
 	write(1, "exit\n", 5);
-	// rl_clear_history();
-	ft_lstclear(&ls_env);
+	ft_malloc(0, 'f', true);
+	rl_clear_history();
+	// ft_lstclear(&ls_env);
 	exit(0);
 }
 

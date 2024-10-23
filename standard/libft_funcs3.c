@@ -78,3 +78,37 @@ char	*ft_strrchr(const char *s, int c)
 	}
 	return (0);
 }
+
+char	*ft_strrdup(const char *s1)
+{
+	size_t	i;
+	char	*p;
+
+	i = 0;
+	p = (char *)ft_malloc(sizeof(char) * ft_strlen(s1) + 1, 'a', false);
+	if (p == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	p[i] = '\0';
+	return (p);
+}
+
+t_list	*ft_lsttnew(char *content)
+{
+	t_list	*node;
+	char	*var;
+
+	var = ft_strrdup(content);
+	if (!var)
+		(ft_malloc(0, 'f', true), exit(1));
+	node = (t_list *)ft_malloc(sizeof(t_list), 'a', false);
+	if (node == NULL)
+		(ft_malloc(0, 'f', true), exit(1));
+	node->data = var;
+	node->next = NULL;
+	return (node);
+}

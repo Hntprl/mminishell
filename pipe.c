@@ -59,6 +59,7 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 {
 	t_cmd	cmd;
 	char	*jn;
+	int		status;
 
 	cmd.envp = ft_list_to_str((*ls_env));
 	cmd.pid = fork();
@@ -73,10 +74,11 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 		cmd.cmd2 = ft_strjoin("/", cmd.cmd1[0]);
 		commandcheck(cmd.envp, cmd.cmd2);
 		jn = ft_strjoin(ft_checkaccess(cmd.envp, cmd.cmd2), cmd.cmd2);
-		(execve(jn, cmd.cmd1, cmd.envp), exit(1));
+		(execve(jn, cmd.cmd1, cmd.envp), free(jn), exit(1));
 	}
 	free(cmd.envp);
-	waitpid(cmd.pid, NULL, 0);
+	waitpid(cmd.pid, &status, 0);
+	g_status = WEXITSTATUS(status);
 }
 
 void	ft_all_commands(t_parser *parser, t_list **ls_env, int p[2])
@@ -102,6 +104,7 @@ void	ft_all_commands(t_parser *parser, t_list **ls_env, int p[2])
 void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 {
 	t_cmd	cmd;
+	int		status;
 
 	cmd.envp = ft_list_to_str((*ls_env));
 	cmd.pid = fork();
@@ -120,5 +123,6 @@ void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 		exit(1);
 	}
 	free(cmd.envp);
-	waitpid(cmd.pid, NULL, 0);
+	waitpid(cmd.pid, &status, 0);
+	g_status = WEXITSTATUS(status);
 }
