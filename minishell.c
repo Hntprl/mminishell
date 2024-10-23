@@ -22,14 +22,12 @@ int	ft_getpid(void)
 	int		pid;
 	char	*ptr;
 
-	fd = open("/proc/self/stat", O_RDONLY);
-	if (fd == -1)
-		exit(1);
+	err(fd = open("/proc/self/stat", O_RDONLY));
 	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
 	if (bytes_read == -1)
-		(close(fd), exit(1));
+		(err(close(fd)), ft_malloc(0, 'f', true), exit(1));
 	buffer[bytes_read] = '\0';
-	close(fd);
+	err(close(fd));
 	ptr = buffer;
 	while (*ptr != ' ' && *ptr != '\0')
 		ptr++;
@@ -98,7 +96,6 @@ void	minishell(t_list *ls_env)
 	write(1, "exit\n", 5);
 	ft_malloc(0, 'f', true);
 	rl_clear_history();
-	// ft_lstclear(&ls_env);
 	exit(0);
 }
 

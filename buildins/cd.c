@@ -81,19 +81,19 @@ void	ft_cd_command(char **command, t_list **ls_env)
 	pwd_set(ls_env, "OLDPWD=");
 	home_path = ft_find_env_value("$HOME", env, 0);
 	if (!command[1])
-		chdir(home_path);
+		err(chdir(home_path));
 	else if (command[1][0] == '~')
 	{
 		if (command[1][0] == '~' && command[1][1] == '/')
 		{
 			home_path = ft_strjoin(home_path, ft_strrchr(command[1], '/'));
-			(chdir(home_path), free(home_path));
+			(err(chdir(home_path)), free(home_path));
 		}
 		else
-			chdir(home_path);
+			err(chdir(home_path));
 	}
 	else
-		chdir(command[1]);
+		err(chdir(command[1]));
 	pwd_set(ls_env, "PWD");
 	free(env);
 }

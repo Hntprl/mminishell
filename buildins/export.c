@@ -40,8 +40,7 @@ void	export_printer(t_export **export, int end)
 		while (j < end)
 		{
 			if ((*export)[j].index == i)
-				printf("declare -x %s: %d\n", ((*export)[j].str),
-					((*export)[j].index));
+				printf("declare -x %s\n", ((*export)[j].str));
 			j++;
 		}
 		i++;

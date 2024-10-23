@@ -74,7 +74,7 @@ t_list	*mini_env(void)
 
 	lst = NULL;
 	if (getcwd(buf, 4096))
-		exit(g_status);
+		(ft_malloc(0, 'f', true), exit(1));
 	tmp = ft_strjoin("PWD=", buf);
 	ft_lstadd_back(&lst, ft_lstnew(tmp));
 	free(tmp);
