@@ -12,32 +12,10 @@
 
 #include "minishell.h"
 
-void	shell_commands(char **split, t_list *env)
-{
-	char	*path;
-	char	*cmd;
-	int		pid;
-	char	**envp;
-	char	*jn;
-
-	jn = NULL;
-	err(pid = fork());
-	if (pid == 0)
-	{
-		envp = ft_list_to_str(env);
-		cmd = ft_strjoin("/", split[0]);
-		path = ft_checkaccess(envp, cmd);
-		jn = ft_strjoin(path, cmd);
-		(commandcheck(envp, cmd), execve(jn, split, envp), free(jn), exit(127));
-	}
-	err(wait(&pid));
-	g_status = WEXITSTATUS(pid);
-}
-
 void	ft_close_std(int std_in, int std_out)
 {
-		(err(dup2(std_out, 1)), err(close(std_out)));
-		(err(dup2(std_in, 0)), err(close(std_in)));
+	(err(dup2(std_out, 1)), err(close(std_out)));
+	(err(dup2(std_in, 0)), err(close(std_in)));
 }
 
 void	ft_single_command(t_parser *parser, t_list **ls_env)

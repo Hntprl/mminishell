@@ -117,6 +117,7 @@ size_t					ft_super_strlen(const char *s, char c);
 int						ft_strcmp(const char *s1, const char *s2);
 void					*ft_malloc(size_t size, char alloc, bool is_free);
 int						ft_isdigit(int c);
+char					*ft_strjjoin(char const *s1, char const *s2);
 /* Lincked-list*/
 t_list					*ft_lstnew(char *ontent);
 char					**ft_list_to_str(t_list *env);
@@ -135,10 +136,12 @@ void					ft_pwd_command(void);
 void					ft_cd_command(char **command, t_list **ls_env);
 void					ft_echo_command(char **command, char **env);
 void					ft_env_command(t_list *env);
-void					ft_export_command(char **split, t_list **env);
+void					ft_export_command(char *split, t_list **env);
 void					ft_unset_command(char *split, t_list **env);
 int						ft_buildins(t_parser *parser, t_list **ls_env);
 void					err(int r);
+void					ft_unset(char **command, t_list **ls_env);
+void					ft_export(char **command, t_list **env);
 // Environment
 void					commandcheck(char **envp, char *cmd2);
 char					*ft_findpath(char **env);

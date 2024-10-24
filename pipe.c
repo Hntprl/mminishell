@@ -70,7 +70,6 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 		jn = ft_strjoin(ft_checkaccess(cmd.envp, cmd.cmd2), cmd.cmd2);
 		(execve(jn, cmd.cmd1, cmd.envp), free(jn), exit(1));
 	}
-	free(cmd.envp);
 	err(waitpid(cmd.pid, &status, 0));
 	g_status = WEXITSTATUS(status);
 }
@@ -90,7 +89,6 @@ void	ft_all_commands(t_parser *parser, t_list **ls_env, int p[2])
 		(execve(ft_strjoin(ft_checkaccess(cmd.envp, cmd.cmd2), cmd.cmd2),
 				cmd.cmd1, cmd.envp), exit(1));
 	}
-	free(cmd.envp);
 }
 
 void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
@@ -112,7 +110,6 @@ void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 			cmd.cmd1, cmd.envp);
 		exit(1);
 	}
-	free(cmd.envp);
 	err(waitpid(cmd.pid, &status, 0));
 	g_status = WEXITSTATUS(status);
 }

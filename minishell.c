@@ -65,9 +65,9 @@ int	ft_buildins(t_parser *parser, t_list **ls_env)
 	else if (!ft_memcmp(parser->command[0], "env", 4))
 		return (ft_env_command(*ls_env), 1);
 	else if (!ft_memcmp(parser->command[0], "unset", 6))
-		return (ft_unset_command(parser->command[1], ls_env), 1);
+		return (ft_unset(parser->command, ls_env), 1);
 	else if (!ft_memcmp(parser->command[0], "export", 7))
-		return (ft_export_command(parser->command, ls_env), 1);
+		return (ft_export(parser->command, ls_env), 1);
 	else if (!ft_memcmp(parser->command[0], "exit", 5))
 		return (ft_exit_command(parser->command), 1);
 	else if (parser->command[0][0] == '$')

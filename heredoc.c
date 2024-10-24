@@ -32,8 +32,8 @@ int	heredoc(t_file_red *file_red)
 {
 	char	*tmp;
 	int		fd;
-	// int		flag;
 	char	*tmp2;
+	// int		flag;
 
 	tmp = ft_strjoin("/tmp/", file_red->filename);
 	fd = open(tmp, O_CREAT | O_RDWR | O_TRUNC, 0644);

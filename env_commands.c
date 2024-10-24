@@ -17,7 +17,8 @@ void	ft_env_command(t_list *env)
 {
 	while (env)
 	{
-		printf("%s\n", env->data);
+		if (ft_strchr(env->data, '='))
+			printf("%s\n", env->data);
 		env = env->next;
 	}
 }
@@ -25,7 +26,7 @@ void	ft_env_command(t_list *env)
 void	unset_checker(t_list **current
 				, t_list **prev, t_list **env)
 {
-	t_list	*dlt;
+	t_list		*dlt;
 
 	dlt = (*current);
 	if ((*prev))
@@ -33,7 +34,6 @@ void	unset_checker(t_list **current
 	else
 		(*env) = (*current)->next;
 	(*current) = (*current)->next;
-	ft_lstdelone(dlt);
 }
 
 // unset command .
@@ -58,5 +58,33 @@ void	ft_unset_command(char *split, t_list **env)
 			prev = current;
 			current = current->next;
 		}
+	}
+}
+
+void	ft_unset(char **command, t_list **ls_env)
+{
+	int	i;
+
+	i = 1;
+	if (!command[i])
+		return ;
+	while (command[i])
+	{
+		ft_unset_command(command[i], ls_env);
+		i ++;
+	}
+}
+
+void	ft_export(char **command, t_list **env)
+{
+	int	i;
+
+	i = 1;
+	if (!command[1])
+		ft_export_command(NULL, env);
+	while (command[i])
+	{
+		ft_export_command(command[i], env);
+		i ++;
 	}
 }

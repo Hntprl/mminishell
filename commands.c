@@ -12,10 +12,26 @@
 
 #include "minishell.h"
 
-void	err(int r)
+void	shell_commands(char **split, t_list *env)
 {
-	if (r == -1)
-		(ft_malloc(0, 'f', true), exit(1));
+	char	*path;
+	char	*cmd;
+	int		pid;
+	char	**envp;
+	char	*jn;
+
+	jn = NULL;
+	err(pid = fork());
+	if (pid == 0)
+	{
+		envp = ft_list_to_str(env);
+		cmd = ft_strjoin("/", split[0]);
+		path = ft_checkaccess(envp, cmd);
+		jn = ft_strjoin(path, cmd);
+		(commandcheck(envp, cmd), execve(jn, split, envp), free(jn), exit(1));
+	}
+	err(wait(&pid));
+	g_status = WEXITSTATUS(pid);
 }
 
 // pwd command .
@@ -91,7 +107,7 @@ int	ft_expander(char *var_name, char **env)
 	{
 		var = ft_substr(env[j], 0, ft_super_strlen(env[j], '='));
 		if (!ft_strcmp(var_name, var))
-			return ((free(env), free(var)
+			return ((free(var)
 					, printf("%s: No such file or directory\n"
 						, ft_strchr(env[j], '=') + 1)));
 		free(var);
@@ -99,5 +115,5 @@ int	ft_expander(char *var_name, char **env)
 	}
 	if (var_name[i - 1] != '$')
 		printf("%s: No such file or directory\n", (var_name - 1));
-	return (free(env), 1);
+	return (1);
 }

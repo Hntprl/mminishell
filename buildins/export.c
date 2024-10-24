@@ -20,10 +20,9 @@ int	double_export(char *var_name, char **env)
 	while (env[i])
 	{
 		if (!ft_memcmp(var_name, env[i], ft_super_strlen(env[i], '=')))
-			return (free(env), 1);
+			return (1);
 		i++;
 	}
-	free(env);
 	return (0);
 }
 
@@ -40,7 +39,7 @@ void	export_printer(t_export **export, int end)
 		while (j < end)
 		{
 			if ((*export)[j].index == i)
-				printf("declare -x %s\n", ((*export)[j].str));
+				printf("declare -x \"%s\"\n", ((*export)[j].str));
 			j++;
 		}
 		i++;
@@ -88,20 +87,21 @@ void	print_export(t_list *env)
 }
 
 // export command .
-void	ft_export_command(char **split, t_list **env)
+void	ft_export_command(char *split, t_list **env)
 {
-	if (split[1] == NULL)
+	if (split == NULL)
 	{
 		print_export((*env));
 		return ;
 	}
-	if (!ft_isalpha(split[1][0]))
-		printf("export: %s: not a valid identifier\n", split[1]);
-	if (!ft_strchr(split[1], '='))
-		return ;
-	if (double_export(split[1], ft_list_to_str(*(env))))
+	if (!ft_isalpha(split[0]))
+		printf("export: %s: not a valid identifier\n", split);
+	if (!ft_strchr(split, '='))
 	{
-		ft_unset_command(split[1], env);
+		ft_lstadd_back(env, ft_lsttnew(split));
+		return ;
 	}
-	ft_lstadd_back(env, ft_lstnew(split[1]));
+	if (double_export(split, ft_list_to_str(*(env))))
+		ft_unset_command(split, env);
+	ft_lstadd_back(env, ft_lstnew(split));
 }

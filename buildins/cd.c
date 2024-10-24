@@ -41,8 +41,8 @@ void	pwd_set(t_list **ls_env, char *pwd)
 			break ;
 		list = list->next;
 	}
-	free(list->data);
-	list->data = ft_strjoin(pwd, getcwd(buf, 4096));
+	// free(list->data);
+	list->data = ft_strjjoin(pwd, getcwd(buf, 4096));
 }
 
 int	cd_access_check(char **command)
@@ -95,5 +95,4 @@ void	ft_cd_command(char **command, t_list **ls_env)
 	else
 		err(chdir(command[1]));
 	pwd_set(ls_env, "PWD");
-	free(env);
 }

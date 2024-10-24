@@ -34,7 +34,7 @@ int	ft_check_open(t_parser *parser, int std_in)
 {
 	int	err;
 
-	err  = access(parser->red->filename, F_OK);
+	err = access(parser->red->filename, F_OK);
 	if (err == -1)
 		(ft_malloc(0, 'f', true), exit(1));
 	if (err)
@@ -74,7 +74,8 @@ int	open_files(t_parser *parser, int std_in)
 		parser->red = parser->red->next;
 	}
 	if (parser->red->typeoffile == REDIRECTION_APPEND)
-		err(fd = open(parser->red->filename, O_RDWR | O_CREAT | O_APPEND, 0644));
+		err(fd = open(parser->red->filename,
+				O_RDWR | O_CREAT | O_APPEND, 0644));
 	else if (parser->red->typeoffile == REDIRECTION_IN)
 	{
 		if (ft_check_open(parser, std_in) == -1337)

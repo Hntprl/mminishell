@@ -21,7 +21,6 @@ void	commandcheck(char **envp, char *cmd2)
 		write(2, cmd2, ft_strlen(cmd2));
 		write(2, ": command not found\n", 20);
 		exit(127);
-		return ;
 	}
 }
 
@@ -50,7 +49,7 @@ char	*ft_checkaccess(char **env, char *cmd)
 	i = 0;
 	allpaths = ft_split(ft_findpath(env), ':');
 	if (allpaths == NULL)
-		exit(EXIT_FAILURE);
+		exit(1);
 	while (allpaths[i] != NULL)
 	{
 		path = ft_strjoin(allpaths[i], cmd);

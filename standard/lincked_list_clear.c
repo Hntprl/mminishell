@@ -18,7 +18,7 @@ char	**ft_list_to_str(t_list *env)
 	char	**envp;
 
 	i = 0;
-	envp = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
+	envp = ft_malloc(sizeof(char *) * (ft_lstsize(env) + 1), 'a', false);
 	while (env)
 	{
 		envp[i] = env->data;

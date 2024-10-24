@@ -111,7 +111,7 @@ void	ft_echo_command(char **command, char **env)
 	{
 		i = 0;
 		if (!command[j] || (flag && !command[2]))
-			return (free(env));
+			return ;
 		while (command[j][i])
 			i = ft_echo(i, command, j, env);
 		if (command[j + 1] && !is_n(command[j]))
@@ -120,5 +120,4 @@ void	ft_echo_command(char **command, char **env)
 	}
 	if (!flag)
 		printf("\n");
-	free(env);
 }

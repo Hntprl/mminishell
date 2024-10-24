@@ -36,7 +36,7 @@ void	free_garbage(t_garbage *collector)
 	while (current)
 	{
 		next = current->next;
-		if (!current->is_free)
+		if (current->is_free == false)
 			free(current->data);
 		free(current);
 		current = next;
